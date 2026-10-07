@@ -2,37 +2,34 @@
 
 ## 📑 Sommaire
 
-## 📑 Sommaire
+1. **[Objectif du document](#1-objectif-du-document)**
 
-**[1. Objectif du document](#1objectif_du_document)**
+2. **[Pourquoi Revolut est intégré à ma stratégie](#2-pourquoi-revolut-est-intégré-à-ma-stratégie)**
+  - 2.1 **[Optimisation du cash & RevPoints](#21-optimisation-du-cash--revpoints)**
+  - 2.2 **[Gestion de la multi-devises](#22-gestion-de-la-multi-devises)**
+  - 2.3 **[Séparation des flux financiers](#23-séparation-des-flux-financiers)**
 
-**[2. Pourquoi Revolut est intégré à ma stratégie](#2pourquoi_revolut_est_intégré_à_ma_stratégie)**
-  - **[2.1 Optimisation du cash & RevPoints](#21optimisation_du_cash--revpoints)**
-  - **[2.2 Gestion de la multi-devises](#22gestion_de_la_multi-devises)**
-  - **[2.3 Séparation des flux financiers](#23séparation_des_flux_financiers)**
+3. **[Pourquoi Trade Republic est au cœur de ma stratégie](#3-pourquoi-trade-republic-est-au-cœur-de-ma-stratégie)**
+   - 3.1 **[Avantages structurels](#31-avantages-structurels)**
+   - 3.2 **[Comparaison avec les banques traditionnelles](#32-comparaison-avec-les-banques-traditionnelles)**
 
-**[3. Pourquoi Trade Republic est au cœur de ma stratégie](#3pourquoi_trade_republic_est_au_cœur_de_ma_stratégie)**
-  - **[3.1 Avantages structurels](#31avantages_structurels)**
-  - **[3.2 Comparaison avec les banques traditionnelles](#32comparaison_avec_les_banques_traditionnelles)**
+4. **[Structure globale de mon épargne](#4-structure-globale-de-mon-épargne)**
+   - 4.1 **[Livret A](#41-livret-a)**
+   - 4.2 **[Assurance-vie](#42-assurance-vie)**
+   - 4.3 **[PEA](#43-pea)**
+   - 4.4 **[CTO](#44-cto)**
 
-**[4. Structure globale de mon épargne](#4structure_globale_de_mon_épargne)**
-  - **[4.1 Livret A](#41livret-a)**
-  - **[4.2 Assurance-vie](#42assurance-vie)**
-  - **[4.3 PEA](#43pea)**
-  - **[4.4 CTO](#44cto)**
+5. **[Stratégie DCA (Dollar Cost Averaging)](#5-stratégie-dca-dollar-cost-averaging)**
+   - 5.1 **[Stratégie règle générale](#51-stratégie-règle-générale)**
+   - 5.2 **[Application concrète](#52-application-concrète)**
 
-**[5. Stratégie DCA (Dollar Cost Averaging)](#5stratégie_dca-dollar_cost_averaging)**
-  - **[5.1 Stratégie règle générale](#51stratégie_règle_générale)**
-  - **[5.2 Application concrète](#52application_concrète)**
+6. **[Obligations américaines : logique et justifications](#6-obligations-américaines--logique-et-justifications)**
 
-**[6. Obligations américaines : logique et justifications](#6obligations_américaines--logique_et_justifications)**
+7. **[Synthèse](#7-synthèse)**
 
-**[7. Synthèse](#7synthèse)**
+8. **[Vision globale](#8-vision-globale)**
 
-**[8. Vision globale](#8vision_globale)**
-
-**[9. Disclaimer](#9disclaimer)**
-
+9. **[Disclaimer](#9-disclaimer)**
 
 
 
