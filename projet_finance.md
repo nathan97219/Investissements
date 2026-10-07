@@ -136,39 +136,48 @@ C’est ton matelas de sécurité 🧘‍♂️.
 Une fois ce matelas en place, tu peux investir sereinement, sans stress, sans paniquer au moindre imprévu 📈.
 
 
-### 6. Pilier 3 : Croissance - Le PEA
+### 6. Pilier 3 : Croissance — Le PEA
+   
+Le PEA est l’enveloppe la plus puissante pour un jeune investisseur : fiscalement imbattable 🔥, simple à utiliser, et parfait pour construire une croissance long terme.
+J’y mets trois ETF : **MSCI World EUR (Acc) 🌍, CAC 40 🇫🇷 et Emergent Markets 🌏.**
 
-Fiscalement imbattable 🔥, simple à utiliser, et parfait pour les ETF long terme.
-J’y mets trois ETF :
+#### 🌍 MSCI World EUR (Acc) : la base solide
+Le MSCI World EUR est idéal pour démarrer : son prix bas permet un DCA fluide, la devise EUR évite les fluctuations visibles du dollar, et sa performance est identique à la version USD (hors effet devise).
 
-* MSCI World EUR (Acc) 🌍
+La version ACC réinvestit automatiquement les dividendes 🔄, ce qui crée une croissance plus régulière et parfaitement adaptée au PEA.
 
-* CAC 40 🇫🇷
+À l’inverse, la version DIST verse les dividendes sur ton compte : utile si tu veux un revenu, mais moins optimale pour un horizon long terme.
 
-* Emergent Markets 🌏
+👉 Pour un jeune investisseur qui veut maximiser la croissance, **ACC est le choix logique.**
 
-#### Pourquoi le MSCI World EUR (Acc) ?
-Le MSCI World EUR est idéal pour un jeune investisseur :
+#### 🇫🇷 CAC 40 :lLe complément local
 
-* Son prix bas permet un DCA fluide 💧
-* Sa devise EUR évite les fluctuations visibles du dollar 💶
-* Sa performance est identique à la version USD (hors effet devise)
-* La version ACC réinvestit automatiquement les dividendes 🔄
+Le CAC 40 apporte une exposition simple et efficace à la croissance européenne.
+Moins volatil que les émergents, il équilibre le PEA et apporte une touche “locale” qui stabilise le portefeuille.
 
-##### 🔍 ACC vs DIST : la différence claire
+#### 🌏 Emergent Markets : le moteur dynamique
 
-* **ACC (Accumulating)** → les dividendes sont réinvestis automatiquement dans l’ETF
+J’ai ajouté un ETF émergent — un choix réfléchi.
+Les marchés émergents sont plus volatils ⚡, plus sensibles aux cycles économiques et aux devises, mais offrent un potentiel de croissance supérieur 📈.
 
-   * Croissance plus régulière
+C’est un excellent complément au MSCI World, à condition de l’aborder avec une stratégie adaptée.
 
-    * Pas de fiscalité sur dividendes dans le PEA
+#### 🔄 Mon plan d’épargne TR : une vraie stratégie, pas un automatisme
 
-    * Parfait pour un horizon long terme
+Sur Trade Republic, j’ai mis en place un plan d’investissement automatique :
 
-* **DIST (Distributing)** → les dividendes sont versés sur ton compte
+* MSCI World → 1 fois par mois
 
-    * Utile si tu veux un revenu
+* CAC 40 → 1 fois par mois
 
-  * Moins optimal dans un PEA long terme
+* Emergent Markets → 1 fois par semaine
 
-👉 Pour un jeune investisseur qui veut maximiser la croissance : **ACC est le choix logique.**
+
+
+Le MSCI World et le CAC 40 sont stables : un DCA mensuel suffit pour lisser le prix sans sur‑réagir aux fluctuations.
+
+Les émergents, eux, bougent beaucoup plus : variations fortes, risques géopolitiques, cycles irréguliers.
+
+Un DCA **hebdomadaire** permet de lisser cette volatilité, d’éviter les achats “au mauvais moment” et de stabiliser le prix moyen d’achat.
+
+> 👉 Ce rythme n’est pas arbitraire : il reflète la nature de chaque ETF et optimise la régularité de ton portefeuille.
