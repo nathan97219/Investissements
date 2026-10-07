@@ -2,26 +2,37 @@
 
 ## 📑 Sommaire
 
+## 📑 Sommaire
+
 **[1. Objectif du document](#1objectif_du_document)**
-**[2. Pourquoi Revolut est intégré à ma stratégie](#1objectif_du_document)**
-    **[2.1 Optimisation du cash & Revpoints]()**
-    **[2.2 Gestion de la multi-devises]()**
-    **[2.3 Séparation des fluxs financiers]()**
-**[3. Pourquoi Trade Republic est au coeur de ma stratégie]()**
-    **[3.1 Avantages structurels]()**
-    **[3.2 Comparaison avec les banques traditionnelles]()**
-**[4. Structure globale de mon épargne]()**
-    **[4.1 Livret A]()**
-    **[4.2 Assurance-vie]()**
-    **[4.3 PEA]()**
-    **[4.4 CTO]()**
-**[5. Stratégie DCA (Dollar Cost Averaging)]()**
-    **[5.1 Stratégie règle générale]()**
-    **[5.2 Application concrète]()**
-**[6. Obligations américaines : logique et justifications]()**
-**[7. Synthèse]()**
-**[8. Vision globale]()**
-**[9. Disclaimer]()**
+
+**[2. Pourquoi Revolut est intégré à ma stratégie](#2pourquoi_revolut_est_intégré_à_ma_stratégie)**
+  - **[2.1 Optimisation du cash & RevPoints](#21optimisation_du_cash--revpoints)**
+  - **[2.2 Gestion de la multi-devises](#22gestion_de_la_multi-devises)**
+  - **[2.3 Séparation des flux financiers](#23séparation_des_flux_financiers)**
+
+**[3. Pourquoi Trade Republic est au cœur de ma stratégie](#3pourquoi_trade_republic_est_au_cœur_de_ma_stratégie)**
+  - **[3.1 Avantages structurels](#31avantages_structurels)**
+  - **[3.2 Comparaison avec les banques traditionnelles](#32comparaison_avec_les_banques_traditionnelles)**
+
+**[4. Structure globale de mon épargne](#4structure_globale_de_mon_épargne)**
+  - **[4.1 Livret A](#41livret-a)**
+  - **[4.2 Assurance-vie](#42assurance-vie)**
+  - **[4.3 PEA](#43pea)**
+  - **[4.4 CTO](#44cto)**
+
+**[5. Stratégie DCA (Dollar Cost Averaging)](#5stratégie_dca-dollar_cost_averaging)**
+  - **[5.1 Stratégie règle générale](#51stratégie_règle_générale)**
+  - **[5.2 Application concrète](#52application_concrète)**
+
+**[6. Obligations américaines : logique et justifications](#6obligations_américaines--logique_et_justifications)**
+
+**[7. Synthèse](#7synthèse)**
+
+**[8. Vision globale](#8vision_globale)**
+
+**[9. Disclaimer](#9disclaimer)**
+
 
 
 
