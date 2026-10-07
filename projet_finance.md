@@ -15,3 +15,8 @@
 10. **[Conclusion : La vision long terme](#10-conclusion---la-vision-long-terme)**  
 11. **[Disclaimer](#11-disclaimer)**
 
+
+### 1. Introduction
+
+Quand j’ai commencé à m’intéresser à l’épargne, je me suis rendu compte d’une chose : ce n’est pas l’investissement qui est compliqué, c’est le début. On ne sait pas par où commencer, on entend tout et son contraire, et on finit par ne rien faire.
+J’ai décidé de construire une méthode simple, moderne, adaptée à un jeune qui veut structurer son argent sans se prendre la tête. Pas une formation, pas un cours, juste une stratégie claire, que n’importe qui peut suivre.
