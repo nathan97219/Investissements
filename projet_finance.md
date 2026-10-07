@@ -20,3 +20,23 @@
 
 Quand j’ai commencé à m’intéresser à l’épargne, je me suis rendu compte d’une chose : ce n’est pas l’investissement qui est compliqué, c’est le début. On ne sait pas par où commencer, on entend tout et son contraire, et on finit par ne rien faire.
 J’ai décidé de construire une méthode simple, moderne, adaptée à un jeune qui veut structurer son argent sans se prendre la tête. Pas une formation, pas un cours, juste une stratégie claire, que n’importe qui peut suivre.
+
+### 2. Le problème
+
+La plupart des gens n’arrivent pas à investir pour une raison simple : ils mélangent tout.
+Les dépenses, l’épargne, les projets, les investissements… tout est dans le même compte, tout se mélange, et rien n’est clair. Les banques traditionnelles sont floues, les influenceurs racontent n’importe quoi, et les plateformes d’investissement semblent compliquées.
+
+> Résultat : on procrastine, on remet à plus tard, et on perd des années.
+
+### 3. Les solutions 
+
+Pour sortir de ce chaos, j'ai construit une structure en 4 pilliers. C'est simple, logique, et ça permet de comprendre exactement où va chaque euro. 
+
+* Gestion des flux (Revolut Metal)
+* Sécurité (Livret A)
+* Croissance long terme (PEA)
+* Diversification (CTO + Assurance-vie)
+
+Cette structure est la base de tout. Elle permet de séparer, clarifier, automatiser. 
+
+
