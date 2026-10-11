@@ -200,3 +200,28 @@ L'Assurance-vie, elle, prépare le futur : fiscalité avantageuse, fonds euro, o
 
 👉 **[Mon Trade Republic]( https://app.traderepublic.com/boards/8f320dc1-ce01-4976-8974-8152f9f82d06)**
 
+### 8. La méthode DCA - Le coeur de la stratégie 
+
+Le DCA (Dollar Cost Averagin) est ce qui transforme l'investissement en une routine. On essaie pas de prédire le marché. On achète régulièrement, mécaniquement, et on laisse le temps faire son travail.
+
+Il s'agit d'une stratégie d'investissement qui consiste à investir une somme fixe à intervalle réguliers et ceux indépendamment de son prix ou de l'état du marché. 
+
+
+J'ai compris que le DCA devait s'adapter à la volatilité. 
+
+* ETF stables --> un achat par mois  (MSCI World ainsi que CAC 40)
+* ETF volatils --> plusieurs petits achats par mois 
+* Actions individuelles --> plusieurs petits achats par mois également
+* Obligations --> achats manuels
+
+C'est simple, logique, et efficace. 
+
+Pourquoi cette notion de petits achats par mois ? Pour lisser les prix au maximum. En achetant petit à petit ca me permet de plus suivre l'évolution du marché. 
+
+> 💡 Nous verrons qu'il existe également deux autres méthodes dans un autre projet !
+
+
+
+
+
+
