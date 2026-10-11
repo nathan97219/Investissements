@@ -181,3 +181,22 @@ Les émergents, eux, bougent beaucoup plus : variations fortes, risques géopoli
 Un DCA **hebdomadaire** permet de lisser cette volatilité, d’éviter les achats “au mauvais moment” et de stabiliser le prix moyen d’achat.
 
 > 👉 Ce rythme n’est pas arbitraire : il reflète la nature de chaque ETF et optimise la régularité de ton portefeuille.
+
+
+### 7. Pilier 4: Diversification - CTO + Assurance vie
+
+Une fois le PEA en place, le CTO permet d'aller plus loin. C'est la que je mets les actifs plus volatils ou plus spécifiques : 
+
+* Actions individuelles 
+* Obligations américaines
+* Crypto
+
+
+Concernant la crypto et les actions individuelles, ils sont tous les deux plus volatils. Je les achète donc en plusieurs fois dans le mois afin de lisser le prix. 
+> Les obligations US servent à stabiliser le portefeuille.  
+
+L'Assurance-vie, elle, prépare le futur : fiscalité avantageuse, fonds euro, obligations, ETF monde. 
+
+
+👉 **[Mon Trade Republic]( https://app.traderepublic.com/boards/8f320dc1-ce01-4976-8974-8152f9f82d06)**
+
