@@ -220,8 +220,33 @@ Pourquoi cette notion de petits achats par mois ? Pour lisser les prix au maximu
 
 > 💡 Nous verrons qu'il existe également deux autres méthodes dans un autre projet !
 
+### 9. Mon plan concret - Ce que je fais chaque mois
+
+ Chaque mois, ma stratégie est claire : 
+* Sur le PEA : 
+  * 60% MSCI World (base mondiale, stable, diversifiée), 
+  * 25% CAC 40 (exposition locale, volatilité modérée) 
+  * Ainsi que 15% ETF Emerging Markets (potentiel + volatilité)
+* Sur le CTO : Achats actions individuelles ainsi que de la crypto (Bitcoin principalement) et il peut m'arriver d'acheter des obligations également. 
+* Sur Revolut Metal : J'essaye de gérer mes flux entrants et sortants du mieux que je peux. Je gère également mes Revpoints et ca me permet de payer en multi-devise gratuitement.
+* Sur le Livret A je verse environ 400€ par mois en guise de sécurité. Pour pouvoir réagir en cas de problème à tout moment.  
+* Sur l'Assurance-Vie : je me construit sur le long terme j'envoie environ 100€ par mois
 
 
+L'objectif c'est de ne pas stresser à regarder et de le faire de manière automatique. C'est avant tout pour ça que j'utilise Trade Republic ainsi que pour la faciliter de son utilisation. 
 
+
+### 10. Conclusion : La vision long terme
+
+Je ne cherche pas à battre le marché. Je cherche à construire quelque chose, progressivement, intelligemment, sans me compliquer la vie.
+Ma stratégie repose sur trois principes : 
+
+**Séparer, Automatiser, Diversifier.**
+
+C’est une méthode moderne, simple, adaptée à un jeune investisseur qui veut comprendre ce qu’il fait sans se perdre dans des détails inutiles.
+
+### 11. Disclaimer
+
+*Ce document n’est pas un conseil financier. C’est une réflexion personnelle, un partage d’expérience. Pour toute décision importante, consulter un professionnel qualifié est recommandé.*
 
 
