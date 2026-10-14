@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Sécurité : la page n'a le droit de charger QUE ses propres fichiers (aucun script externe). -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="description" content="Calculateur Value Averaging gratuit : combien investir ce mois-ci pour suivre ta trajectoire ?">
+  <title>Calculateur Value Averaging</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="entete">
+    <h1>🎯 Calculateur Value Averaging</h1>
+    <p class="sous-titre">Combien investir ce mois-ci pour rester sur ta trajectoire ?</p>
+  </header>
+
+  <main>
+    <!-- ===================== 1. LE FORMULAIRE ===================== -->
+    <form id="formulaire" class="carte" novalidate>
+      <h2>1. Mes réglages</h2>
+
+      <div class="champ">
+        <label for="increment">Augmentation visée chaque mois</label>
+        <div class="saisie-euro">
+          <input type="number" id="increment" min="1" step="1" value="200" required inputmode="decimal">
+          <span>€</span>
+        </div>
+        <p class="aide">Ton « versement idéal » : de combien ton portefeuille doit grossir chaque mois.</p>
+      </div>
+
+      <div class="champ">
+        <label for="taux">Rendement annuel attendu</label>
+        <div class="saisie-euro">
+          <input type="number" id="taux" min="-50" max="50" step="0.5" value="0" required inputmode="decimal">
+          <span>%</span>
+        </div>
+        <p class="aide">Laisse 0 % pour la version simple. Avec 5 à 7 %, la cible tient compte de la croissance espérée du marché.</p>
+      </div>
+
+      <div class="champ">
+        <label for="plafond">Versement maximum par mois</label>
+        <div class="saisie-euro">
+          <input type="number" id="plafond" min="0" step="1" value="0" required inputmode="decimal">
+          <span>€</span>
+        </div>
+        <p class="aide">Garde-fou après une forte baisse. 0 = pas de plafond.</p>
+      </div>
+
+      <div class="champ champ-case">
+        <input type="checkbox" id="vente">
+        <label for="vente">Autoriser les ventes quand le portefeuille dépasse la cible</label>
+      </div>
+      <p class="aide">Décoché (conseillé sur un PEA) : au lieu de vendre, l'outil te dira simplement d'investir 0 €.</p>
+
+      <h2>2. Ce mois-ci</h2>
+
+      <div class="champ">
+        <label for="mois">Numéro du mois</label>
+        <input type="number" id="mois" min="1" max="600" step="1" value="1" required inputmode="numeric">
+        <p class="aide">1 = le tout premier mois où tu appliques la méthode.</p>
+      </div>
+
+      <div class="champ">
+        <label for="valeur">Valeur actuelle de mon portefeuille</label>
+        <div class="saisie-euro">
+          <input type="number" id="valeur" min="0" step="0.01" value="0" required inputmode="decimal">
+          <span>€</span>
+        </div>
+        <p class="aide">Regarde ton appli (Trade Republic, Boursorama…) juste avant d'investir. 0 si tu démarres.</p>
+      </div>
+
+      <button type="submit" class="bouton">Calculer</button>
+
+      <!-- Les erreurs de saisie s'affichent ici -->
+      <div id="erreurs" class="erreurs" role="alert" hidden></div>
+    </form>
+
+    <!-- ===================== 2. LE RÉSULTAT ===================== -->
+    <section id="resultat" class="carte resultat" aria-live="polite" hidden>
+      <p class="resultat-titre">Ce mois-ci, investis :</p>
+      <p id="resultat-montant" class="resultat-montant"></p>
+      <p id="resultat-detail" class="resultat-detail"></p>
+      <p id="resultat-alerte" class="resultat-alerte" hidden></p>
+    </section>
+
+    <!-- ===================== 3. LE PLAN ===================== -->
+    <section class="carte">
+      <h2>3. Mon plan : la trajectoire cible</h2>
+      <p class="aide">Ce que ton portefeuille devrait valoir à la fin de chaque mois.</p>
+      <div class="tableau-defilant">
+        <table>
+          <thead>
+            <tr><th scope="col">Mois</th><th scope="col">Valeur cible</th></tr>
+          </thead>
+          <tbody id="plan-corps"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 4. LA SIMULATION ===================== -->
+    <section class="carte">
+      <h2>4. Simulation : Value Averaging ou DCA ?</h2>
+      <p class="aide">
+        Sur un scénario <strong>inventé</strong> de 24 mois (une hausse, un krach de −30 %, puis un rebond),
+        avec tes réglages. Le DCA investit toujours le même montant.
+      </p>
+      <div class="comparaison">
+        <div class="bilan">
+          <h3>🎯 Value Averaging</h3>
+          <p>Investi : <strong id="va-investi"></strong></p>
+          <p>Valeur finale : <strong id="va-valeur"></strong></p>
+          <p>Gain : <strong id="va-gain"></strong></p>
+        </div>
+        <div class="bilan">
+          <h3>🔁 DCA</h3>
+          <p>Investi : <strong id="dca-investi"></strong></p>
+          <p>Valeur finale : <strong id="dca-valeur"></strong></p>
+          <p>Gain : <strong id="dca-gain"></strong></p>
+        </div>
+      </div>
+      <details>
+        <summary>Voir le détail mois par mois</summary>
+        <div class="tableau-defilant">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Mois</th><th scope="col">Marché</th>
+                <th scope="col">Versement VA</th><th scope="col">Valeur VA</th>
+                <th scope="col">Versement DCA</th><th scope="col">Valeur DCA</th>
+              </tr>
+            </thead>
+            <tbody id="simulation-corps"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===================== 5. L'EXPLICATION ===================== -->
+    <section class="carte">
+      <h2>Comment ça marche ?</h2>
+      <p>Au lieu d'investir un <strong>montant</strong> fixe chaque mois (DCA), on vise une <strong>valeur</strong> de portefeuille
+        qui grandit régulièrement. Chaque mois :</p>
+      <p class="formule">Montant à investir = Valeur cible − Valeur actuelle</p>
+      <ul>
+        <li>📉 Le marché a <strong>baissé</strong> → tu investis <strong>plus</strong> (tu achètes moins cher).</li>
+        <li>📈 Le marché a <strong>monté</strong> → tu investis <strong>moins</strong>.</li>
+        <li>🚀 Le marché a <strong>beaucoup monté</strong> → tu n'investis rien, ou tu vends l'excédent.</li>
+      </ul>
+      <p class="aide">Aucune donnée n'est envoyée sur Internet : tous les calculs se font dans ton navigateur.
+        Tes réglages sont seulement mémorisés sur cet appareil.</p>
+    </section>
+  </main>
+
+  <footer class="pied">
+    <p>⚠️ Outil pédagogique, pas un conseil financier. Investir comporte un risque de perte en capital.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

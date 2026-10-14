@@ -1,21 +1,46 @@
 [← Accueil](../../README.md)
 
-# 🛠️ Calculateur Value Averaging *(en construction)*
+# 🛠️ Calculateur Value Averaging
 
 Une page web ultra simple pour répondre à la question : **« Combien j'investis ce mois-ci ? »**
 
-## Fonctionnalités prévues
-
-1. **Le mois en cours** : je saisis la valeur actuelle de mon portefeuille → l'outil me donne le montant à investir (ou à retirer).
-2. **Mon plan** : la trajectoire cible, mois par mois.
-3. **Comparaison avec le DCA** sur une simulation.
-4. **Garde-fous** : versement maximum par mois, mode « jamais de vente » (pratique pour un PEA).
-
-## Principes techniques
-
-- Page web **statique** (HTML / CSS / JavaScript), hébergée sur GitHub Pages ;
-- **aucun serveur, aucune donnée envoyée** : tous les calculs restent dans le navigateur ;
-- logique de calcul **séparée** de l'affichage et **couverte par des tests automatiques** ;
-- toutes les saisies sont **validées** (montants négatifs, champs vides, valeurs absurdes).
-
 📖 La méthode expliquée : [fiche Value Averaging](../../docs/2-methodes/value-averaging.md)
+
+## Fonctionnalités
+
+1. **Le mois en cours** : on saisit la valeur actuelle du portefeuille → montant à investir (ou à retirer).
+2. **Le plan** : la trajectoire cible, mois par mois.
+3. **La comparaison avec le DCA** sur un scénario d'exemple (hausse, krach, rebond).
+4. **Des garde-fous** : versement maximum par mois, mode « jamais de vente » (pratique pour un PEA).
+
+## Les fichiers
+
+| Fichier | Rôle |
+|---|---|
+| `index.html` | La structure de la page (formulaire, résultat, tableaux) |
+| `style.css` | L'apparence (couleurs, mise en page, mode sombre automatique) |
+| `calcul.js` | **Les maths, et uniquement les maths** : aucune dépendance à la page |
+| `app.js` | Le lien entre la page et `calcul.js` : lire, vérifier, calculer, afficher |
+| `calcul.test.js` | Les tests automatiques de `calcul.js` |
+| `package.json` | Permet de lancer les tests avec `npm test` |
+
+## Lancer la page en local
+
+Dans VS Code : clic droit sur `index.html` → **Open with Live Server**.
+
+> ⚠️ Un double-clic sur `index.html` ne suffit pas : le navigateur bloque les scripts découpés en modules quand la page est ouverte comme un simple fichier.
+
+## Lancer les tests
+
+```bash
+cd outils/value-averaging
+npm test
+```
+
+## Sécurité
+
+- **Aucun serveur, aucune donnée envoyée** : tous les calculs se font dans le navigateur.
+- **Politique de sécurité (CSP)** : la page n'a le droit de charger que ses propres fichiers.
+- **Pas d'injection possible** : les résultats sont affichés avec `textContent`, jamais `innerHTML`.
+- **Saisies validées** avant tout calcul (montants négatifs, champs vides, valeurs absurdes).
+- Les réglages sont mémorisés **uniquement sur l'appareil** (`localStorage`), puis revérifiés à la relecture.

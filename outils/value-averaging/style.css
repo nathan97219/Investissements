@@ -1,0 +1,166 @@
+/* =============================================================================
+   style.css : l'apparence de la page
+   -----------------------------------------------------------------------------
+   Les couleurs sont regroupées en « variables » (--nom) en haut du fichier :
+   on peut changer tout le thème en modifiant quelques lignes.
+   ============================================================================= */
+
+:root {
+  --fond: #f6f7f4;
+  --carte: #ffffff;
+  --texte: #1d2321;
+  --texte-doux: #5c6662;
+  --accent: #1f7a5a;          /* vert « épargne » */
+  --accent-clair: #e3f2ec;
+  --alerte: #a15c00;
+  --alerte-fond: #fff4e2;
+  --erreur: #b3261e;
+  --erreur-fond: #fdecea;
+  --bordure: #dfe3df;
+  --rayon: 14px;
+  color-scheme: light dark;
+}
+
+/* Thème sombre automatique si l'appareil est en mode sombre */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #121614;
+    --carte: #1b211e;
+    --texte: #e8ece9;
+    --texte-doux: #a3ada8;
+    --accent: #5cc8a0;
+    --accent-clair: #1f3a2f;
+    --alerte: #f0b35b;
+    --alerte-fond: #3a2c14;
+    --erreur: #ff8a80;
+    --erreur-fond: #3d1d1b;
+    --bordure: #2e3632;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+  line-height: 1.5;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+  display: grid;
+  gap: 16px;
+}
+
+/* ---------- En-tête ---------- */
+.entete {
+  text-align: center;
+  padding: 32px 16px 16px;
+}
+.entete h1 { margin: 0; font-size: clamp(1.5rem, 5vw, 2.2rem); }
+.sous-titre { margin: 8px 0 0; color: var(--texte-doux); }
+
+/* ---------- Cartes ---------- */
+.carte {
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 20px;
+}
+h2 { font-size: 1.15rem; margin: 0 0 12px; }
+h2:not(:first-child) { margin-top: 24px; }
+h3 { margin: 0 0 8px; font-size: 1rem; }
+
+/* ---------- Formulaire ---------- */
+.champ { margin-bottom: 14px; }
+.champ label { display: block; font-weight: 600; margin-bottom: 4px; }
+
+input[type="number"] {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 10px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: var(--fond);
+  color: var(--texte);
+}
+input[type="number"]:focus {
+  outline: 3px solid var(--accent-clair);
+  border-color: var(--accent);
+}
+
+.saisie-euro { display: flex; align-items: center; gap: 8px; }
+.saisie-euro span { font-weight: 600; color: var(--texte-doux); }
+
+.champ-case { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.champ-case label { margin: 0; font-weight: 600; }
+.champ-case input { width: 20px; height: 20px; accent-color: var(--accent); }
+
+.aide { font-size: 0.9rem; color: var(--texte-doux); margin: 4px 0 0; }
+
+.bouton {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.bouton:hover { filter: brightness(1.08); }
+.bouton:focus-visible { outline: 3px solid var(--texte); outline-offset: 2px; }
+
+.erreurs {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--erreur-fond);
+  color: var(--erreur);
+}
+.erreurs ul { margin: 0; padding-left: 18px; }
+
+/* ---------- Résultat ---------- */
+.resultat { text-align: center; background: var(--accent-clair); border-color: var(--accent); }
+.resultat-titre { margin: 0; font-weight: 600; }
+.resultat-montant { margin: 4px 0; font-size: clamp(2.2rem, 9vw, 3.2rem); font-weight: 800; color: var(--accent); }
+.resultat-detail { margin: 0; color: var(--texte-doux); }
+.resultat-alerte {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--alerte-fond);
+  color: var(--alerte);
+}
+
+/* ---------- Tableaux ---------- */
+.tableau-defilant { max-height: 340px; overflow: auto; margin-top: 12px; border: 1px solid var(--bordure); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid var(--bordure); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { position: sticky; top: 0; background: var(--carte); }
+
+/* ---------- Simulation ---------- */
+.comparaison { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
+.bilan { padding: 14px; border-radius: 10px; background: var(--fond); }
+.bilan p { margin: 4px 0; }
+details { margin-top: 12px; }
+summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+
+/* ---------- Explication ---------- */
+.formule {
+  text-align: center;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--accent-clair);
+}
+
+/* ---------- Pied de page ---------- */
+.pied { text-align: center; padding: 16px; color: var(--texte-doux); font-size: 0.9rem; }
