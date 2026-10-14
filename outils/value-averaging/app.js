@@ -10,6 +10,10 @@ import {
   planCibles,
   simuler,
   validerSaisie,
+  repartir,
+  validerRepartition,
+  totalPourcentages,
+  MAX_PRODUITS,
   SCENARIO_EXEMPLE,
 } from "./calcul.js";
 
@@ -25,9 +29,84 @@ const champs = {
   valeur: $("valeur"),
 };
 
+const champNbProduits = $("nb-produits");
+const zoneProduits = $("produits");
+
 // ---------- Mise en forme des nombres « à la française » ----------
 const euros = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 const pourcent = new Intl.NumberFormat("fr-FR", { style: "percent", maximumFractionDigits: 1, signDisplay: "always" });
+
+// ---------- 0. Les lignes de produits (nom + pourcentage) ----------
+// Crée une ligne « Nom du produit | % » dans la page.
+function creerLigneProduit(numero, produit) {
+  const ligne = document.createElement("div");
+  ligne.className = "ligne-produit";
+
+  const blocNom = document.createElement("div");
+  const labelNom = document.createElement("label");
+  labelNom.htmlFor = `produit-nom-${numero}`;
+  labelNom.textContent = `Produit ${numero}`;
+  const inputNom = document.createElement("input");
+  inputNom.type = "text";
+  inputNom.id = `produit-nom-${numero}`;
+  inputNom.className = "produit-nom";
+  inputNom.maxLength = 40;
+  inputNom.placeholder = "ex. MSCI World";
+  inputNom.value = produit.nom;
+  blocNom.append(labelNom, inputNom);
+
+  const blocPct = document.createElement("div");
+  const labelPct = document.createElement("label");
+  labelPct.htmlFor = `produit-pct-${numero}`;
+  labelPct.textContent = "Part (%)";
+  const inputPct = document.createElement("input");
+  inputPct.type = "number";
+  inputPct.id = `produit-pct-${numero}`;
+  inputPct.className = "produit-pct";
+  inputPct.min = "0";
+  inputPct.max = "100";
+  inputPct.step = "0.01";
+  inputPct.inputMode = "decimal";
+  inputPct.value = String(produit.pourcentage);
+  blocPct.append(labelPct, inputPct);
+
+  ligne.append(blocNom, blocPct);
+  return ligne;
+}
+
+// Lit les produits actuellement saisis dans la page.
+function lireProduits() {
+  return [...zoneProduits.querySelectorAll(".ligne-produit")].map((ligne) => ({
+    nom: ligne.querySelector(".produit-nom").value.trim(),
+    pourcentage: ligne.querySelector(".produit-pct").valueAsNumber,
+  }));
+}
+
+// (Re)dessine les lignes quand le nombre de produits change, en gardant ce qui était déjà saisi.
+function dessinerProduits(produits) {
+  zoneProduits.replaceChildren(...produits.map((p, i) => creerLigneProduit(i + 1, p)));
+  majTotal();
+}
+
+function changerNombreProduits() {
+  const voulu = champNbProduits.valueAsNumber;
+  if (!Number.isInteger(voulu) || voulu < 1 || voulu > MAX_PRODUITS) return;
+  const actuels = lireProduits();
+  const produits = Array.from({ length: voulu }, (_, i) =>
+    actuels[i] ?? { nom: "", pourcentage: voulu === 1 ? 100 : 0 });
+  dessinerProduits(produits);
+}
+
+// Affiche « Total : 100 % ✅ » ou « Total : 90 % ❌ » en direct.
+function majTotal() {
+  const total = Math.round(totalPourcentages(lireProduits()) * 100) / 100;
+  const ok = Math.abs(total - 100) < 0.001;
+  const zone = $("total-pourcentages");
+  zone.textContent = ok
+    ? `Total : ${total} % ✅`
+    : `Total : ${total} % ❌ (il manque ${Math.round((100 - total) * 100) / 100} %)`;
+  zone.className = `total-pourcentages ${ok ? "ok" : "ko"}`;
+}
 
 // ---------- 1. Lire le formulaire ----------
 // valueAsNumber renvoie un vrai nombre (ou NaN si le champ est vide ou invalide).
@@ -81,6 +160,21 @@ function afficherResultat(saisie) {
   }
   alerte.textContent = message;
   alerte.hidden = message === "";
+
+  // Répartition entre les produits (affichée seulement s'il y en a plusieurs)
+  const produits = lireProduits();
+  const zoneRepartition = $("repartition");
+  if (produits.length > 1) {
+    const lignes = repartir(r.montant, produits);
+    remplirTableau("repartition-corps", lignes.map((l) => [
+      l.nom,
+      `${l.pourcentage} %`,
+      euros.format(l.montant),
+    ]));
+    zoneRepartition.hidden = false;
+  } else {
+    zoneRepartition.hidden = true;
+  }
 
   $("resultat").hidden = false;
 }
@@ -142,6 +236,7 @@ function sauvegarder() {
       plafond: champs.plafond.value,
       vente: champs.vente.checked,
       mois: champs.mois.value,
+      produits: lireProduits(),
     };
     localStorage.setItem(CLE, JSON.stringify(reglages));
   } catch {
@@ -160,6 +255,19 @@ function restaurer() {
       }
     }
     champs.vente.checked = reglages.vente === true;
+
+    // Produits : on ne garde que des données propres (nom court, pourcentage entre 0 et 100).
+    if (Array.isArray(reglages.produits)) {
+      const produits = reglages.produits
+        .slice(0, MAX_PRODUITS)
+        .filter((p) => p && typeof p.nom === "string" && typeof p.pourcentage === "number"
+          && Number.isFinite(p.pourcentage) && p.pourcentage >= 0 && p.pourcentage <= 100)
+        .map((p) => ({ nom: p.nom.slice(0, 40), pourcentage: p.pourcentage }));
+      if (produits.length > 0) {
+        champNbProduits.value = String(produits.length);
+        dessinerProduits(produits);
+      }
+    }
   } catch {
     // Données illisibles : on garde les valeurs par défaut.
   }
@@ -168,7 +276,7 @@ function restaurer() {
 // ---------- 6. Le chef d'orchestre ----------
 function calculer() {
   const saisie = lireSaisie();
-  const erreurs = validerSaisie(saisie);
+  const erreurs = [...validerSaisie(saisie), ...validerRepartition(lireProduits())];
   afficherErreurs(erreurs);
   if (erreurs.length > 0) {
     $("resultat").hidden = true;
@@ -185,7 +293,11 @@ $("formulaire").addEventListener("submit", (evenement) => {
   calculer();
 });
 
-// Au chargement : on remet les réglages mémorisés et on affiche plan + simulation.
+champNbProduits.addEventListener("input", changerNombreProduits);
+zoneProduits.addEventListener("input", majTotal);
+
+// Au chargement : une ligne de produit par défaut, puis les réglages mémorisés.
+dessinerProduits([{ nom: "", pourcentage: 100 }]);
 restaurer();
 const saisieInitiale = lireSaisie();
 if (validerSaisie(saisieInitiale).length === 0) {

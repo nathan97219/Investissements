@@ -115,3 +115,61 @@ test("validerSaisie : refuse les valeurs absurdes ou dangereuses", () => {
     assert.ok(validerSaisie(saisie).length > 0, `devrait être refusé : ${JSON.stringify(saisie)}`);
   }
 });
+
+// ---------------- Répartition entre plusieurs produits ----------------
+import { repartir, validerRepartition, totalPourcentages } from "./calcul.js";
+
+const somme = (lignes) => Math.round(lignes.reduce((s, l) => s + l.montant, 0) * 100) / 100;
+
+test("repartir : exemple simple 60 / 40", () => {
+  const r = repartir(210, [{ nom: "World", pourcentage: 60 }, { nom: "Émergents", pourcentage: 40 }]);
+  assert.deepEqual(r.map((l) => l.montant), [126, 84]);
+});
+
+test("repartir : la somme tombe toujours pile, même avec des tiers", () => {
+  const tiers = [{ nom: "A", pourcentage: 33.33 }, { nom: "B", pourcentage: 33.33 }, { nom: "C", pourcentage: 33.34 }];
+  for (const montant of [100, 0.01, 0.02, 210, 999.99, 1234.57]) {
+    assert.equal(somme(repartir(montant, tiers)), montant, `montant ${montant}`);
+  }
+});
+
+test("repartir : mon plan réel 57 / 25 / 18 sur 635 €", () => {
+  const r = repartir(635, [
+    { nom: "MSCI World", pourcentage: 57 },
+    { nom: "Émergents", pourcentage: 25 },
+    { nom: "CAC 40", pourcentage: 18 },
+  ]);
+  assert.equal(somme(r), 635);
+  assert.equal(r[1].montant, 158.75);
+});
+
+test("repartir : un montant négatif (vente) est réparti en négatif", () => {
+  const r = repartir(-80, [{ nom: "A", pourcentage: 75 }, { nom: "B", pourcentage: 25 }]);
+  assert.deepEqual(r.map((l) => l.montant), [-60, -20]);
+});
+
+test("repartir : 0 € donne 0 € partout, et un produit à 0 % reçoit 0 €", () => {
+  assert.deepEqual(repartir(0, [{ nom: "A", pourcentage: 50 }, { nom: "B", pourcentage: 50 }]).map((l) => l.montant), [0, 0]);
+  assert.deepEqual(repartir(100, [{ nom: "A", pourcentage: 100 }, { nom: "B", pourcentage: 0 }]).map((l) => l.montant), [100, 0]);
+});
+
+test("validerRepartition : accepte une répartition correcte", () => {
+  assert.deepEqual(validerRepartition([{ nom: "A", pourcentage: 70 }, { nom: "B", pourcentage: 30 }]), []);
+  assert.equal(totalPourcentages([{ nom: "A", pourcentage: 70 }, { nom: "B", pourcentage: 30 }]), 100);
+});
+
+test("validerRepartition : refuse les répartitions incorrectes", () => {
+  const casInvalides = [
+    [],                                                              // aucun produit
+    Array.from({ length: 11 }, (_, i) => ({ nom: `P${i}`, pourcentage: 100 / 11 })), // trop de produits
+    [{ nom: "A", pourcentage: 60 }, { nom: "B", pourcentage: 30 }],  // total 90 %
+    [{ nom: "A", pourcentage: 80 }, { nom: "B", pourcentage: 30 }],  // total 110 %
+    [{ nom: "", pourcentage: 100 }],                                 // nom vide
+    [{ nom: "A".repeat(41), pourcentage: 100 }],                     // nom trop long
+    [{ nom: "A", pourcentage: -10 }, { nom: "B", pourcentage: 110 }], // pourcentage négatif
+    [{ nom: "A", pourcentage: NaN }],                                // pas un nombre
+  ];
+  for (const produits of casInvalides) {
+    assert.ok(validerRepartition(produits).length > 0, `devrait être refusé : ${JSON.stringify(produits).slice(0, 80)}`);
+  }
+});

@@ -9,9 +9,10 @@ Une page web ultra simple pour répondre à la question : **« Combien j'investi
 ## Fonctionnalités
 
 1. **Le mois en cours** : on saisit la valeur actuelle du portefeuille → montant à investir (ou à retirer).
-2. **Le plan** : la trajectoire cible, mois par mois.
-3. **La comparaison avec le DCA** sur un scénario d'exemple (hausse, krach, rebond).
-4. **Des garde-fous** : versement maximum par mois, mode « jamais de vente » (pratique pour un PEA).
+2. **La répartition** : jusqu'à 10 produits (ETF, actions…) avec leur pourcentage → le montant exact pour chacun, au centime près.
+3. **Le plan** : la trajectoire cible, mois par mois.
+4. **La comparaison avec le DCA** sur un scénario d'exemple (hausse, krach, rebond).
+5. **Des garde-fous** : versement maximum par mois, mode « jamais de vente » (pratique pour un PEA).
 
 ## Les fichiers
 

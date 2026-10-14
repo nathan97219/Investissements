@@ -163,3 +163,76 @@ export function validerSaisie({ valeurActuelle, mois, increment, tauxAnnuel = 0,
   }
   return erreurs;
 }
+
+// =============================================================================
+//  RÉPARTITION ENTRE PLUSIEURS PRODUITS
+// =============================================================================
+
+export const MAX_PRODUITS = 10;
+
+/**
+ * Répartit `montant` entre plusieurs produits selon leurs pourcentages.
+ *
+ *   produits = [{ nom: "MSCI World", pourcentage: 60 }, { nom: "Émergents", pourcentage: 40 }]
+ *
+ * La somme des montants est TOUJOURS égale au total, au centime près
+ * (méthode du « plus grand reste » : les centimes restants vont aux produits
+ * dont l'arrondi a été le plus défavorable).
+ * Un montant négatif (vente) est réparti de la même façon, en négatif.
+ */
+export function repartir(montant, produits) {
+  const signe = montant < 0 ? -1 : 1;
+  const totalCentimes = Math.round(Math.abs(montant) * 100);
+
+  // 1. Part « exacte » de chaque produit, en centimes, puis arrondie vers le bas.
+  const parts = produits.map((p, index) => {
+    const exact = (totalCentimes * p.pourcentage) / 100;
+    const base = Math.floor(exact + 1e-9);
+    return { index, base, reste: exact - base };
+  });
+
+  // 2. Les centimes manquants vont aux plus grands restes.
+  let manquants = totalCentimes - parts.reduce((somme, p) => somme + p.base, 0);
+  const parReste = [...parts].sort((a, b) => b.reste - a.reste);
+  for (let i = 0; manquants > 0 && i < parReste.length; i++, manquants--) {
+    parReste[i].base += 1;
+  }
+
+  // 3. Retour en euros, dans l'ordre d'origine.
+  return produits.map((p, index) => ({
+    nom: p.nom,
+    pourcentage: p.pourcentage,
+    montant: (signe * parts[index].base) / 100,
+  }));
+}
+
+/** Vérifie la liste des produits. Renvoie la liste des erreurs (vide = tout va bien). */
+export function validerRepartition(produits) {
+  const erreurs = [];
+  if (!Array.isArray(produits) || produits.length < 1 || produits.length > MAX_PRODUITS) {
+    return [`Il faut entre 1 et ${MAX_PRODUITS} produits.`];
+  }
+  produits.forEach((p, i) => {
+    const numero = i + 1;
+    if (typeof p.nom !== "string" || p.nom.trim() === "") {
+      erreurs.push(`Produit ${numero} : donne-lui un nom.`);
+    } else if (p.nom.length > 40) {
+      erreurs.push(`Produit ${numero} : nom trop long (40 caractères maximum).`);
+    }
+    if (typeof p.pourcentage !== "number" || !Number.isFinite(p.pourcentage) || p.pourcentage < 0 || p.pourcentage > 100) {
+      erreurs.push(`Produit ${numero} : le pourcentage doit être compris entre 0 et 100.`);
+    }
+  });
+  if (erreurs.length === 0) {
+    const total = totalPourcentages(produits);
+    if (Math.abs(total - 100) > 0.001) {
+      erreurs.push(`Le total des pourcentages fait ${arrondir(total)} % : il doit faire exactement 100 %.`);
+    }
+  }
+  return erreurs;
+}
+
+/** Somme des pourcentages (pratique pour l'afficher en direct). */
+export function totalPourcentages(produits) {
+  return produits.reduce((somme, p) => somme + (Number.isFinite(p.pourcentage) ? p.pourcentage : 0), 0);
+}
