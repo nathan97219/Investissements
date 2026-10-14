@@ -54,7 +54,19 @@
       </div>
       <p class="aide">Décoché (conseillé sur un PEA) : au lieu de vendre, l'outil te dira simplement d'investir 0 €.</p>
 
-      <h2>2. Ce mois-ci</h2>
+      <h2>2. Ma répartition</h2>
+      <p class="aide">Sur combien de produits (ETF, actions…) veux-tu répartir le montant, et dans quelles proportions ?</p>
+
+      <div class="champ">
+        <label for="nb-produits">Nombre de produits</label>
+        <input type="number" id="nb-produits" min="1" max="10" step="1" value="1" required inputmode="numeric">
+      </div>
+
+      <!-- Les lignes « nom + pourcentage » sont créées automatiquement par app.js -->
+      <div id="produits" class="produits"></div>
+      <p id="total-pourcentages" class="total-pourcentages" aria-live="polite"></p>
+
+      <h2>3. Ce mois-ci</h2>
 
       <div class="champ">
         <label for="mois">Numéro du mois</label>
@@ -83,11 +95,21 @@
       <p id="resultat-montant" class="resultat-montant"></p>
       <p id="resultat-detail" class="resultat-detail"></p>
       <p id="resultat-alerte" class="resultat-alerte" hidden></p>
+
+      <div id="repartition" class="repartition" hidden>
+        <p class="resultat-titre">Réparti sur tes produits :</p>
+        <table>
+          <thead>
+            <tr><th scope="col">Produit</th><th scope="col">Part</th><th scope="col">Montant</th></tr>
+          </thead>
+          <tbody id="repartition-corps"></tbody>
+        </table>
+      </div>
     </section>
 
     <!-- ===================== 3. LE PLAN ===================== -->
     <section class="carte">
-      <h2>3. Mon plan : la trajectoire cible</h2>
+      <h2>4. Mon plan : la trajectoire cible</h2>
       <p class="aide">Ce que ton portefeuille devrait valoir à la fin de chaque mois.</p>
       <div class="tableau-defilant">
         <table>
@@ -101,7 +123,7 @@
 
     <!-- ===================== 4. LA SIMULATION ===================== -->
     <section class="carte">
-      <h2>4. Simulation : Value Averaging ou DCA ?</h2>
+      <h2>5. Simulation : Value Averaging ou DCA ?</h2>
       <p class="aide">
         Sur un scénario <strong>inventé</strong> de 24 mois (une hausse, un krach de −30 %, puis un rebond),
         avec tes réglages. Le DCA investit toujours le même montant.
