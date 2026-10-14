@@ -6,81 +6,131 @@
   <!-- Sécurité : la page n'a le droit de charger QUE ses propres fichiers (aucun script externe). -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
-  <meta name="description" content="Calculateur Value Averaging gratuit : combien investir ce mois-ci pour suivre ta trajectoire ?">
-  <title>Calculateur Value Averaging</title>
+  <meta name="description" content="Calculateur gratuit Value Averaging et DCA : combien investir ce mois-ci, et sur quel produit. Aucune donnée envoyée.">
+  <title>Calculateur Value Averaging &amp; DCA</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎯%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="entete">
-    <h1>🎯 Calculateur Value Averaging</h1>
-    <p class="sous-titre">Combien investir ce mois-ci pour rester sur ta trajectoire ?</p>
+    <h1>🎯 Combien investir ce mois-ci ?</h1>
+    <p class="sous-titre">Calculateur Value Averaging &amp; DCA · gratuit · aucune donnée envoyée</p>
   </header>
 
   <main>
+    <!-- ===================== 0. PREMIÈRE FOIS ===================== -->
+    <details class="carte bienvenue" id="bienvenue" open>
+      <summary><h2>👋 Première fois ici ?</h2></summary>
+      <ol class="etapes">
+        <li><strong>Choisis ta méthode</strong> : un montant fixe (DCA) ou un montant qui s'adapte au marché (Value Averaging).</li>
+        <li><strong>Indique tes produits</strong> (ETF, actions…) et la part de chacun.</li>
+        <li><strong>Chaque mois</strong>, reviens ici, saisis la valeur de ton portefeuille : l'outil te dit quoi acheter, au centime près.</li>
+      </ol>
+      <button type="button" id="exemple" class="bouton bouton-secondaire">✨ Voir un exemple tout rempli</button>
+    </details>
+
     <!-- ===================== 1. LE FORMULAIRE ===================== -->
     <form id="formulaire" class="carte" novalidate>
-      <h2>1. Mes réglages</h2>
+      <h2>1. Ma méthode</h2>
+
+      <fieldset class="choix-methode">
+        <legend class="sr-only">Méthode d'investissement</legend>
+        <label class="option">
+          <input type="radio" name="methode" value="va" checked>
+          <span><strong>🎯 Value Averaging</strong><br>Le montant s'adapte : plus quand ça baisse, moins quand ça monte.</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="methode" value="dca">
+          <span><strong>🔁 DCA</strong><br>Le même montant chaque mois, quoi qu'il arrive.</span>
+        </label>
+      </fieldset>
 
       <div class="champ">
-        <label for="increment">Augmentation visée chaque mois</label>
+        <label for="increment">
+          <span data-mode="va">Augmentation visée chaque mois</span>
+          <span data-mode="dca">Montant investi chaque mois</span>
+        </label>
         <div class="saisie-euro">
           <input type="number" id="increment" min="1" step="1" value="200" required inputmode="decimal">
           <span>€</span>
         </div>
-        <p class="aide">Ton « versement idéal » : de combien ton portefeuille doit grossir chaque mois.</p>
+        <p class="aide" data-mode="va">Ton « versement idéal » : de combien ton portefeuille doit grossir chaque mois.</p>
+        <p class="aide" data-mode="dca">Le montant de ton plan d'investissement programmé.</p>
       </div>
 
-      <div class="champ">
-        <label for="taux">Rendement annuel attendu</label>
-        <div class="saisie-euro">
-          <input type="number" id="taux" min="-50" max="50" step="0.5" value="0" required inputmode="decimal">
-          <span>%</span>
+      <div class="champ" data-mode="va">
+        <span class="label">Mon mois de départ</span>
+        <div class="saisie-mois">
+          <select id="depart-mois" aria-label="Mois de départ"></select>
+          <input type="number" id="depart-annee" min="1970" max="2100" step="1" inputmode="numeric" aria-label="Année de départ">
         </div>
-        <p class="aide">Laisse 0 % pour la version simple. Avec 5 à 7 %, la cible tient compte de la croissance espérée du marché.</p>
+        <p class="aide">Le mois de ton tout premier versement avec cette méthode. À régler une seule fois.</p>
       </div>
 
-      <div class="champ">
-        <label for="plafond">Versement maximum par mois</label>
-        <div class="saisie-euro">
-          <input type="number" id="plafond" min="0" step="1" value="0" required inputmode="decimal">
-          <span>€</span>
+      <details class="avance" data-mode="va">
+        <summary>⚙️ Réglages avancés (facultatif)</summary>
+
+        <div class="champ">
+          <label for="taux">Rendement annuel attendu</label>
+          <div class="saisie-euro">
+            <input type="number" id="taux" min="-50" max="50" step="0.5" value="0" required inputmode="decimal">
+            <span>%</span>
+          </div>
+          <p class="aide">Laisse 0 % pour la version simple. Avec 5 à 7 %, la cible tient compte de la croissance espérée du marché : les versements sont plus petits en moyenne.</p>
         </div>
-        <p class="aide">Garde-fou après une forte baisse. 0 = pas de plafond.</p>
-      </div>
 
-      <div class="champ champ-case">
-        <input type="checkbox" id="vente">
-        <label for="vente">Autoriser les ventes quand le portefeuille dépasse la cible</label>
-      </div>
-      <p class="aide">Décoché (conseillé sur un PEA) : au lieu de vendre, l'outil te dira simplement d'investir 0 €.</p>
+        <div class="champ">
+          <label for="plafond">Versement maximum par mois</label>
+          <div class="saisie-euro">
+            <input type="number" id="plafond" min="0" step="1" value="0" required inputmode="decimal">
+            <span>€</span>
+          </div>
+          <p class="aide">Garde-fou après une forte baisse : jamais plus que ce que ton budget permet. 0 = pas de plafond.</p>
+        </div>
 
-      <h2>2. Ma répartition</h2>
-      <p class="aide">Sur combien de produits (ETF, actions…) veux-tu répartir le montant, et dans quelles proportions ?</p>
+        <div class="champ champ-case">
+          <input type="checkbox" id="vente">
+          <label for="vente">Autoriser les ventes quand le portefeuille dépasse la cible</label>
+        </div>
+        <p class="aide">Décoché (conseillé, surtout sur un PEA) : au lieu de vendre, l'outil te dira simplement d'investir 0 €.</p>
+      </details>
+
+      <h2>2. Mes produits</h2>
+      <p class="aide">Sur combien de produits (ETF, actions…) veux-tu répartir ton versement, et avec quelle part pour chacun ?</p>
 
       <div class="champ">
         <label for="nb-produits">Nombre de produits</label>
         <input type="number" id="nb-produits" min="1" max="10" step="1" value="1" required inputmode="numeric">
       </div>
 
-      <!-- Les lignes « nom + pourcentage » sont créées automatiquement par app.js -->
+      <div class="champ champ-case">
+        <input type="checkbox" id="reequilibrage">
+        <label for="reequilibrage">Je saisis la valeur de chaque produit (rééquilibrage automatique)</label>
+      </div>
+      <p class="aide">Conseillé : ton versement ira en priorité aux produits qui ont pris du retard sur leur part cible, sans rien vendre.</p>
+
+      <!-- Les lignes « nom + part (+ valeur) » sont créées automatiquement par app.js -->
       <div id="produits" class="produits"></div>
       <p id="total-pourcentages" class="total-pourcentages" aria-live="polite"></p>
 
       <h2>3. Ce mois-ci</h2>
 
       <div class="champ">
-        <label for="mois">Numéro du mois</label>
-        <input type="number" id="mois" min="1" max="600" step="1" value="1" required inputmode="numeric">
-        <p class="aide">1 = le tout premier mois où tu appliques la méthode.</p>
+        <span class="label">Mois du versement</span>
+        <div class="saisie-mois">
+          <select id="courant-mois" aria-label="Mois du versement"></select>
+          <input type="number" id="courant-annee" min="1970" max="2100" step="1" inputmode="numeric" aria-label="Année du versement">
+        </div>
+        <p id="numero-mois" class="aide" data-mode="va" aria-live="polite"></p>
       </div>
 
-      <div class="champ">
+      <div class="champ" id="champ-valeur">
         <label for="valeur">Valeur actuelle de mon portefeuille</label>
         <div class="saisie-euro">
           <input type="number" id="valeur" min="0" step="0.01" value="0" required inputmode="decimal">
           <span>€</span>
         </div>
-        <p class="aide">Regarde ton appli (Trade Republic, Boursorama…) juste avant d'investir. 0 si tu démarres.</p>
+        <p class="aide" id="aide-valeur">Regarde ton appli (Trade Republic, Boursorama…) juste avant d'investir. 0 si tu démarres.</p>
       </div>
 
       <button type="submit" class="bouton">Calculer</button>
@@ -91,25 +141,74 @@
 
     <!-- ===================== 2. LE RÉSULTAT ===================== -->
     <section id="resultat" class="carte resultat" aria-live="polite" hidden>
-      <p class="resultat-titre">Ce mois-ci, investis :</p>
+      <p id="resultat-titre" class="resultat-titre">Ce mois-ci, investis :</p>
       <p id="resultat-montant" class="resultat-montant"></p>
       <p id="resultat-detail" class="resultat-detail"></p>
       <p id="resultat-alerte" class="resultat-alerte" hidden></p>
 
       <div id="repartition" class="repartition" hidden>
         <p class="resultat-titre">Réparti sur tes produits :</p>
-        <table>
-          <thead>
-            <tr><th scope="col">Produit</th><th scope="col">Part</th><th scope="col">Montant</th></tr>
-          </thead>
-          <tbody id="repartition-corps"></tbody>
-        </table>
+        <div class="tableau-large">
+          <table>
+            <thead id="repartition-entete"></thead>
+            <tbody id="repartition-corps"></tbody>
+          </table>
+        </div>
+        <p id="repartition-note" class="aide" hidden></p>
+      </div>
+
+      <div class="enregistrer">
+        <label for="verse">Montant réellement investi</label>
+        <div class="saisie-euro">
+          <input type="number" id="verse" step="0.01" inputmode="decimal">
+          <span>€</span>
+        </div>
+        <p class="aide">Ajuste si tu as arrondi (achat de parts entières, par exemple).</p>
+        <button type="button" id="enregistrer" class="bouton">✅ J'ai fait ce versement : l'ajouter à mon suivi</button>
+        <p id="enregistrer-confirmation" class="confirmation" role="status" hidden></p>
       </div>
     </section>
 
-    <!-- ===================== 3. LE PLAN ===================== -->
-    <section class="carte">
-      <h2>4. Mon plan : la trajectoire cible</h2>
+    <!-- ===================== 3. LE SUIVI ===================== -->
+    <section class="carte" id="suivi">
+      <h2>4. Mon suivi</h2>
+      <p class="aide" id="suivi-vide">Chaque fois que tu cliques sur « J'ai fait ce versement », il s'ajoute ici.
+        Tu verras ce que tu as investi, ce que ça vaut, et si tu es sur ta trajectoire.</p>
+
+      <div id="suivi-contenu" hidden>
+        <div class="chiffres">
+          <div class="chiffre"><span>Total versé</span><strong id="suivi-verse"></strong></div>
+          <div class="chiffre"><span>Valeur</span><strong id="suivi-valeur"></strong></div>
+          <div class="chiffre"><span>Gain</span><strong id="suivi-gain"></strong></div>
+        </div>
+        <p id="suivi-capital" class="aide" hidden></p>
+        <div class="tableau-defilant">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Mois</th><th scope="col">Valeur avant</th><th scope="col">Versé</th>
+                <th scope="col">Valeur après</th><th scope="col">Cible</th><th scope="col"><span class="sr-only">Supprimer</span></th>
+              </tr>
+            </thead>
+            <tbody id="suivi-corps"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="export-journal" class="bouton bouton-secondaire" disabled>📄 Exporter pour Excel (CSV)</button>
+        <button type="button" id="sauvegarde" class="bouton bouton-secondaire">💾 Sauvegarder dans un fichier</button>
+        <input type="file" id="restauration" accept=".json,application/json" class="sr-only">
+        <label class="bouton bouton-secondaire" for="restauration">📂 Restaurer un fichier</label>
+        <button type="button" id="effacer-journal" class="bouton bouton-danger" disabled>🗑️ Tout effacer</button>
+      </div>
+      <p class="aide">Ton suivi reste sur cet appareil. Pour le retrouver sur un autre (PC → téléphone), sauvegarde-le dans un fichier puis restaure-le là-bas.</p>
+      <p id="suivi-message" class="confirmation" role="status" hidden></p>
+    </section>
+
+    <!-- ===================== 4. LE PLAN ===================== -->
+    <section class="carte" data-mode="va">
+      <h2>5. Mon plan : la trajectoire cible</h2>
       <p class="aide">Ce que ton portefeuille devrait valoir à la fin de chaque mois.</p>
       <div class="tableau-defilant">
         <table>
@@ -119,14 +218,17 @@
           <tbody id="plan-corps"></tbody>
         </table>
       </div>
+      <div class="actions">
+        <button type="button" id="export-plan" class="bouton bouton-secondaire">📄 Exporter le plan (CSV)</button>
+      </div>
     </section>
 
-    <!-- ===================== 4. LA SIMULATION ===================== -->
+    <!-- ===================== 5. LA SIMULATION ===================== -->
     <section class="carte">
-      <h2>5. Simulation : Value Averaging ou DCA ?</h2>
+      <h2>6. Simulation : Value Averaging ou DCA ?</h2>
       <p class="aide">
-        Sur un scénario <strong>inventé</strong> de 24 mois (une hausse, un krach de −30 %, puis un rebond),
-        avec tes réglages. Le DCA investit toujours le même montant.
+        Sur un scénario <strong>inventé</strong> de 24 mois (une hausse, un krach d'environ −30 %, puis un rebond),
+        avec ton montant mensuel. Le DCA investit toujours le même montant.
       </p>
       <div class="comparaison">
         <div class="bilan">
@@ -142,6 +244,7 @@
           <p>Gain : <strong id="dca-gain"></strong></p>
         </div>
       </div>
+      <p id="reserve" class="resultat-alerte"></p>
       <details>
         <summary>Voir le détail mois par mois</summary>
         <div class="tableau-defilant">
@@ -159,24 +262,55 @@
       </details>
     </section>
 
-    <!-- ===================== 5. L'EXPLICATION ===================== -->
+    <!-- ===================== 6. L'EXPLICATION ===================== -->
     <section class="carte">
       <h2>Comment ça marche ?</h2>
-      <p>Au lieu d'investir un <strong>montant</strong> fixe chaque mois (DCA), on vise une <strong>valeur</strong> de portefeuille
-        qui grandit régulièrement. Chaque mois :</p>
+      <p>Au lieu d'investir un <strong>montant</strong> fixe chaque mois (DCA), le Value Averaging vise une
+        <strong>valeur</strong> de portefeuille qui grandit régulièrement. Chaque mois :</p>
       <p class="formule">Montant à investir = Valeur cible − Valeur actuelle</p>
       <ul>
         <li>📉 Le marché a <strong>baissé</strong> → tu investis <strong>plus</strong> (tu achètes moins cher).</li>
         <li>📈 Le marché a <strong>monté</strong> → tu investis <strong>moins</strong>.</li>
         <li>🚀 Le marché a <strong>beaucoup monté</strong> → tu n'investis rien, ou tu vends l'excédent.</li>
       </ul>
-      <p class="aide">Aucune donnée n'est envoyée sur Internet : tous les calculs se font dans ton navigateur.
-        Tes réglages sont seulement mémorisés sur cet appareil.</p>
+
+      <h3 class="faq-titre">Questions fréquentes</h3>
+      <details class="faq">
+        <summary>DCA ou Value Averaging : lequel choisir ?</summary>
+        <p>Le <strong>DCA</strong> est le plus simple et s'automatise (plan programmé) : c'est le bon choix pour démarrer.
+          Le <strong>Value Averaging</strong> achète davantage dans les baisses, mais demande de vérifier ton portefeuille
+          chaque mois et d'avoir une <strong>réserve de cash</strong>. Rien n'empêche de mélanger : DCA sur un compte, Value Averaging sur un autre.</p>
+      </details>
+      <details class="faq">
+        <summary>C'est quoi le rééquilibrage automatique ?</summary>
+        <p>Avec le temps, tes produits ne montent pas tous au même rythme : ta répartition dérive.
+          Si tu saisis la valeur de chaque produit, l'outil envoie ton versement en priorité vers ceux qui sont <strong>en retard</strong>
+          sur leur part cible. Tu reviens vers ta répartition idéale <strong>sans rien vendre</strong>, donc sans frais ni impôt.
+          Ça marche avec les deux méthodes.</p>
+      </details>
+      <details class="faq">
+        <summary>Pourquoi ne pas vendre sur un PEA ?</summary>
+        <p>Sur un PEA, un retrait avant 5 ans entraîne en principe sa clôture. Et même après, vendre pour racheter plus tard
+          coûte des frais pour rien. Le plus simple est donc de ne jamais vendre : quand le portefeuille dépasse la cible, on investit 0 €
+          et on garde l'argent de côté pour les mois suivants.</p>
+      </details>
+      <details class="faq">
+        <summary>Combien garder de côté pour le Value Averaging ?</summary>
+        <p>Après une forte baisse, la méthode peut demander 2 à 4 fois le versement habituel. Regarde la ligne « réserve » de la simulation,
+          et fixe un <strong>versement maximum</strong> dans les réglages avancés si ton budget est serré.</p>
+      </details>
+      <details class="faq">
+        <summary>Mes données sont-elles envoyées quelque part ?</summary>
+        <p>Non. Tous les calculs se font dans ton navigateur, et la page est techniquement bloquée pour ne rien envoyer sur Internet.
+          Tes réglages et ton suivi sont seulement mémorisés sur cet appareil.</p>
+      </details>
     </section>
   </main>
 
   <footer class="pied">
     <p>⚠️ Outil pédagogique, pas un conseil financier. Investir comporte un risque de perte en capital.</p>
+    <p><a href="https://github.com/nathan97219/Investissements/blob/master/docs/2-methodes/value-averaging.md">La méthode expliquée</a> ·
+      <a href="https://github.com/nathan97219/Investissements">Le projet sur GitHub</a></p>
   </footer>
 
   <script type="module" src="app.js"></script>

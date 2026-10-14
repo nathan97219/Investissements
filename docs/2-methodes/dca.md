@@ -41,6 +41,11 @@ Ce qui compte vraiment :
 
 > 💡 Si ton courtier ne prend pas de frais sur les plans d'investissement, l'hebdomadaire ne coûte rien et peut rassurer psychologiquement. Sinon, reste en mensuel.
 
+## 🛠️ Répartir son DCA entre plusieurs ETF
+
+Le [calculateur](https://nathan97219.github.io/Investissements/outils/value-averaging/) a un **mode DCA** : tu indiques ton montant fixe et tes produits,
+il te donne la somme exacte pour chacun. Avec le rééquilibrage activé, il envoie davantage vers les produits en retard sur leur part cible.
+
 ## Pour qui ?
 
 Tout le monde. C'est **la méthode par défaut** quand on démarre avec ses revenus mensuels.

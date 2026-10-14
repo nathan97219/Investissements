@@ -173,3 +173,99 @@ test("validerRepartition : refuse les répartitions incorrectes", () => {
     assert.ok(validerRepartition(produits).length > 0, `devrait être refusé : ${JSON.stringify(produits).slice(0, 80)}`);
   }
 });
+
+// =============================================================================
+//  RÉÉQUILIBRAGE PAR LES VERSEMENTS
+// =============================================================================
+import { repartirAvecReequilibrage, validerValeursProduits, repartirSelonPoids } from "./calcul.js";
+
+const totalVerse = (lignes) => arrondir(lignes.reduce((s, l) => s + l.montant, 0));
+
+test("repartirSelonPoids : poids quelconques, somme exacte, poids nuls → 0", () => {
+  assert.deepEqual(repartirSelonPoids(100, [3, 1]), [75, 25]);
+  assert.deepEqual(repartirSelonPoids(10, [1, 1, 1]), [3.34, 3.33, 3.33]);
+  assert.deepEqual(repartirSelonPoids(50, [0, 0]), [0, 0]);
+});
+
+test("rééquilibrage : tout l'argent va au produit en retard", () => {
+  // Cible 50/50. A vaut 600, B vaut 400. On verse 200 → total 1200 → 600/600 : tout va à B.
+  const r = repartirAvecReequilibrage(200, [
+    { nom: "A", pourcentage: 50, valeur: 600 },
+    { nom: "B", pourcentage: 50, valeur: 400 },
+  ]);
+  assert.equal(r[0].montant, 0);
+  assert.equal(r[1].montant, 200);
+  assert.equal(Math.round(r[1].partApres), 50);
+});
+
+test("rééquilibrage : versement trop petit pour tout corriger → on se rapproche, sans dépasser", () => {
+  // Cible 57/25/18, les émergents ont chuté.
+  const r = repartirAvecReequilibrage(230, [
+    { nom: "World", pourcentage: 57, valeur: 340 },
+    { nom: "Émergents", pourcentage: 25, valeur: 120 },
+    { nom: "CAC 40", pourcentage: 18, valeur: 110 },
+  ]);
+  assert.equal(totalVerse(r), 230); // la somme tombe pile
+  for (const l of r) assert.ok(l.montant >= 0); // aucune vente
+  // Après versement, chaque produit est plus proche de sa cible qu'avant
+  for (const l of r) assert.ok(Math.abs(l.partApres - l.pourcentage) <= Math.abs(l.partAvant - l.pourcentage) + 1e-9);
+});
+
+test("rééquilibrage : portefeuille vide ou déjà équilibré → répartition classique", () => {
+  const vide = repartirAvecReequilibrage(635, [
+    { nom: "World", pourcentage: 57, valeur: 0 },
+    { nom: "Émergents", pourcentage: 25, valeur: 0 },
+    { nom: "CAC 40", pourcentage: 18, valeur: 0 },
+  ]);
+  assert.deepEqual(vide.map((l) => l.montant), [361.95, 158.75, 114.3]);
+  const equilibre = repartirAvecReequilibrage(100, [
+    { nom: "A", pourcentage: 60, valeur: 600 },
+    { nom: "B", pourcentage: 40, valeur: 400 },
+  ]);
+  assert.deepEqual(equilibre.map((l) => l.montant), [60, 40]);
+});
+
+test("rééquilibrage : en cas de vente, on vend ce qui est en excès", () => {
+  const r = repartirAvecReequilibrage(-100, [
+    { nom: "A", pourcentage: 50, valeur: 700 },
+    { nom: "B", pourcentage: 50, valeur: 500 },
+  ]);
+  assert.equal(r[0].montant, -100);
+  assert.equal(r[1].montant, 0);
+});
+
+test("validerValeursProduits : refuse les valeurs vides ou négatives", () => {
+  assert.deepEqual(validerValeursProduits([{ valeur: 0 }, { valeur: 12.5 }]), []);
+  assert.equal(validerValeursProduits([{ valeur: NaN }, { valeur: -1 }]).length, 2);
+});
+
+// =============================================================================
+//  CALENDRIER ET RÉSERVE
+// =============================================================================
+import { numeroDuMois, moisNumero, validerCalendrier } from "./calcul.js";
+
+test("numeroDuMois : octobre 2026 → janvier 2027 = mois 4", () => {
+  assert.equal(numeroDuMois({ annee: 2026, mois: 10 }, { annee: 2026, mois: 10 }), 1);
+  assert.equal(numeroDuMois({ annee: 2026, mois: 10 }, { annee: 2027, mois: 1 }), 4);
+});
+
+test("moisNumero : l'inverse de numeroDuMois", () => {
+  assert.deepEqual(moisNumero({ annee: 2026, mois: 10 }, 1), { annee: 2026, mois: 10 });
+  assert.deepEqual(moisNumero({ annee: 2026, mois: 10 }, 4), { annee: 2027, mois: 1 });
+  assert.deepEqual(moisNumero({ annee: 2026, mois: 10 }, 15), { annee: 2027, mois: 12 });
+});
+
+test("validerCalendrier : refuse un versement avant le départ ou une date incomplète", () => {
+  assert.deepEqual(validerCalendrier({ annee: 2026, mois: 10 }, { annee: 2026, mois: 12 }), []);
+  assert.equal(validerCalendrier({ annee: 2026, mois: 10 }, { annee: 2026, mois: 9 }).length, 1);
+  assert.equal(validerCalendrier({ annee: NaN, mois: 10 }, { annee: 2026, mois: 9 }).length, 1);
+  assert.equal(validerCalendrier({ annee: 2026, mois: 13 }, { annee: 2026, mois: 9 }).length, 1);
+});
+
+test("simuler : indique le plus gros versement demandé (la réserve à prévoir)", () => {
+  const sim = simuler({ increment: 200, rendementsMensuels: SCENARIO_EXEMPLE });
+  const max = Math.max(...sim.lignes.map((l) => l.montantVA));
+  assert.equal(sim.va.versementMax, max);
+  assert.ok(sim.va.versementMax > 200); // après le krach, le VA demande plus que le versement habituel
+  assert.equal(sim.lignes[sim.va.moisVersementMax - 1].montantVA, max);
+});

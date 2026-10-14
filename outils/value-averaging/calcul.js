@@ -119,9 +119,12 @@ export function simuler({ increment, tauxAnnuel = 0, rendementsMensuels, plafond
     rendement: investi > 0 ? (valeur - investi) / investi : 0,
   });
 
+  // Le mois où le Value Averaging a demandé le plus gros versement : c'est la réserve à prévoir.
+  const plusGros = lignes.reduce((max, l) => (l.montantVA > max.montantVA ? l : max), lignes[0] ?? { mois: 0, montantVA: 0 });
+
   return {
     lignes,
-    va: bilan(valeurVA, investiVA),
+    va: { ...bilan(valeurVA, investiVA), versementMax: plusGros.montantVA, moisVersementMax: plusGros.mois },
     dca: bilan(valeurDCA, investiDCA),
   };
 }
@@ -153,7 +156,7 @@ export function validerSaisie({ valeurActuelle, mois, increment, tauxAnnuel = 0,
     erreurs.push("Le numéro du mois doit être un nombre entier entre 1 et 600 (50 ans).");
   }
   if (!estNombre(increment) || increment <= 0 || increment > MAX) {
-    erreurs.push("L'augmentation mensuelle visée doit être un montant supérieur à 0.");
+    erreurs.push("Le montant mensuel doit être supérieur à 0.");
   }
   if (!estNombre(tauxAnnuel) || tauxAnnuel < -0.5 || tauxAnnuel > 0.5) {
     erreurs.push("Le rendement attendu doit être compris entre −50 % et +50 % par an.");
@@ -181,12 +184,28 @@ export const MAX_PRODUITS = 10;
  * Un montant négatif (vente) est réparti de la même façon, en négatif.
  */
 export function repartir(montant, produits) {
+  const montants = repartirSelonPoids(montant, produits.map((p) => p.pourcentage));
+  return produits.map((p, index) => ({
+    nom: p.nom,
+    pourcentage: p.pourcentage,
+    montant: montants[index],
+  }));
+}
+
+/**
+ * Le moteur commun : découpe `montant` proportionnellement à des `poids` quelconques
+ * (pourcentages, retards en euros…). Renvoie un tableau de montants en euros dont la somme
+ * est EXACTEMENT `montant`, au centime près. Poids tous nuls → tout à 0.
+ */
+export function repartirSelonPoids(montant, poids) {
   const signe = montant < 0 ? -1 : 1;
   const totalCentimes = Math.round(Math.abs(montant) * 100);
+  const totalPoids = poids.reduce((s, p) => s + (p > 0 ? p : 0), 0);
+  if (totalPoids <= 0 || totalCentimes === 0) return poids.map(() => 0);
 
   // 1. Part « exacte » de chaque produit, en centimes, puis arrondie vers le bas.
-  const parts = produits.map((p, index) => {
-    const exact = (totalCentimes * p.pourcentage) / 100;
+  const parts = poids.map((p, index) => {
+    const exact = (totalCentimes * (p > 0 ? p : 0)) / totalPoids;
     const base = Math.floor(exact + 1e-9);
     return { index, base, reste: exact - base };
   });
@@ -198,12 +217,54 @@ export function repartir(montant, produits) {
     parReste[i].base += 1;
   }
 
-  // 3. Retour en euros, dans l'ordre d'origine.
-  return produits.map((p, index) => ({
-    nom: p.nom,
-    pourcentage: p.pourcentage,
-    montant: (signe * parts[index].base) / 100,
-  }));
+  // 3. Retour en euros, dans l'ordre d'origine (0 et non -0 pour un montant nul).
+  return parts.map((p) => (p.base === 0 ? 0 : (signe * p.base) / 100));
+}
+
+/**
+ * RÉÉQUILIBRAGE PAR LES VERSEMENTS : on connaît la valeur actuelle de chaque produit.
+ * Le versement va EN PRIORITÉ aux produits en retard sur leur part cible, sans rien vendre.
+ *
+ *   produits = [{ nom, pourcentage, valeur }, …]
+ *
+ * Méthode : après versement, le portefeuille vaudra `total + montant`. Chaque produit
+ * « devrait » alors valoir `pourcentage` de ce total. Le versement est réparti
+ * proportionnellement aux retards (jamais plus que le retard d'un produit).
+ * Si le montant est négatif (vente autorisée), on vend proportionnellement aux excédents.
+ */
+export function repartirAvecReequilibrage(montant, produits) {
+  const totalAvant = produits.reduce((s, p) => s + p.valeur, 0);
+  const totalApres = totalAvant + montant;
+  const ecarts = produits.map((p) => (totalApres * p.pourcentage) / 100 - p.valeur);
+
+  // Retards (si on investit) ou excédents (si on vend)
+  let poids = ecarts.map((e) => (montant >= 0 ? Math.max(0, e) : Math.max(0, -e)));
+  if (poids.every((p) => p <= 1e-9)) poids = produits.map((p) => p.pourcentage); // déjà pile à l'équilibre
+  const montants = repartirSelonPoids(montant, poids);
+
+  return produits.map((p, i) => {
+    const valeurApres = arrondir(p.valeur + montants[i]);
+    return {
+      nom: p.nom,
+      pourcentage: p.pourcentage,
+      valeur: p.valeur,
+      partAvant: totalAvant > 0 ? (p.valeur / totalAvant) * 100 : 0,
+      montant: montants[i],
+      valeurApres,
+      partApres: totalApres > 0 ? (valeurApres / totalApres) * 100 : 0,
+    };
+  });
+}
+
+/** Vérifie les valeurs actuelles saisies pour chaque produit (mode rééquilibrage). */
+export function validerValeursProduits(produits) {
+  const erreurs = [];
+  produits.forEach((p, i) => {
+    if (typeof p.valeur !== "number" || !Number.isFinite(p.valeur) || p.valeur < 0 || p.valeur > 1_000_000_000) {
+      erreurs.push(`Produit ${i + 1} : indique sa valeur actuelle (0 si tu ne l'as pas encore).`);
+    }
+  });
+  return erreurs;
 }
 
 /** Vérifie la liste des produits. Renvoie la liste des erreurs (vide = tout va bien). */
@@ -235,4 +296,33 @@ export function validerRepartition(produits) {
 /** Somme des pourcentages (pratique pour l'afficher en direct). */
 export function totalPourcentages(produits) {
   return produits.reduce((somme, p) => somme + (Number.isFinite(p.pourcentage) ? p.pourcentage : 0), 0);
+}
+
+// =============================================================================
+//  CALENDRIER : retrouver tout seul le numéro du mois
+// -----------------------------------------------------------------------------
+//  Un mois est représenté par { annee: 2026, mois: 10 } (mois de 1 à 12).
+// =============================================================================
+
+/** Numéro du mois de versement : 1 = le mois de départ, 2 = le suivant, etc. */
+export function numeroDuMois(depart, courant) {
+  return (courant.annee - depart.annee) * 12 + (courant.mois - depart.mois) + 1;
+}
+
+/** Le mois qui tombe `n` mois après `depart` (n = 1 → le mois de départ lui-même). */
+export function moisNumero(depart, n) {
+  const index = depart.annee * 12 + (depart.mois - 1) + (n - 1);
+  return { annee: Math.floor(index / 12), mois: (index % 12) + 1 };
+}
+
+/** Vérifie le mois de départ et le mois du versement. Renvoie la liste des erreurs. */
+export function validerCalendrier(depart, courant) {
+  const ok = (m) => m && Number.isInteger(m.annee) && m.annee >= 1970 && m.annee <= 2100
+    && Number.isInteger(m.mois) && m.mois >= 1 && m.mois <= 12;
+  if (!ok(depart)) return ["Indique ton mois de départ (mois + année)."];
+  if (!ok(courant)) return ["Indique le mois du versement (mois + année)."];
+  const n = numeroDuMois(depart, courant);
+  if (n < 1) return ["Le mois du versement est avant ton mois de départ : vérifie les deux dates."];
+  if (n > 600) return ["Plus de 50 ans entre le départ et le versement : vérifie l'année de départ."];
+  return [];
 }

@@ -56,7 +56,9 @@ Ce projet rassemble ce que j'ai compris, sous forme de **fiches courtes**, à li
 
 ### 🛠️ Outils
 
-- [Calculateur Value Averaging](outils/value-averaging/) *(en construction)*
+- 🎯 [**Calculateur Value Averaging & DCA**](outils/value-averaging/) : combien investir ce mois-ci, et sur quel produit.
+  Rééquilibrage automatique sans vente, suivi de tes versements, export Excel. Gratuit, rien n'est envoyé sur Internet.
+  👉 **[Ouvrir le calculateur en ligne](https://nathan97219.github.io/Investissements/outils/value-averaging/)**
 
 ---
 

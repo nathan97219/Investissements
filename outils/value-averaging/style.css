@@ -39,6 +39,15 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+/* Texte lu par les lecteurs d'écran, mais invisible à l'écran */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+a { color: var(--accent); }
 
 body {
   margin: 0;
@@ -48,6 +57,7 @@ body {
   line-height: 1.5;
 }
 
+main > * { min-width: 0; }
 main {
   max-width: 720px;
   margin: 0 auto;
@@ -77,9 +87,9 @@ h3 { margin: 0 0 8px; font-size: 1rem; }
 
 /* ---------- Formulaire ---------- */
 .champ { margin-bottom: 14px; }
-.champ label { display: block; font-weight: 600; margin-bottom: 4px; }
+.champ label, .champ .label { display: block; font-weight: 600; margin-bottom: 4px; }
 
-input[type="number"] {
+input[type="number"], select {
   width: 100%;
   font-size: 1.1rem;
   padding: 10px 12px;
@@ -88,7 +98,7 @@ input[type="number"] {
   background: var(--fond);
   color: var(--texte);
 }
-input[type="number"]:focus {
+input[type="number"]:focus, select:focus {
   outline: 3px solid var(--accent-clair);
   border-color: var(--accent);
 }
@@ -115,6 +125,57 @@ input[type="number"]:focus {
   cursor: pointer;
 }
 .bouton:hover { filter: brightness(1.08); }
+.bouton:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+.bouton-secondaire {
+  color: var(--accent);
+  background: var(--accent-clair);
+  border: 1px solid var(--accent);
+  font-size: 1rem;
+  padding: 10px 14px;
+  text-align: center;
+}
+.bouton-danger { color: var(--erreur); background: var(--erreur-fond); border: 1px solid var(--erreur); font-size: 1rem; padding: 10px 14px; }
+input[type="file"]:focus-visible + label { outline: 3px solid var(--texte); outline-offset: 2px; }
+
+/* Les boutons d'action côte à côte (puis empilés sur téléphone) */
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.actions .bouton { width: auto; flex: 1 1 200px; margin: 0; }
+
+.bouton-ligne {
+  border: none; background: none; color: var(--texte-doux); cursor: pointer;
+  font-size: 1rem; padding: 2px 6px; border-radius: 6px;
+}
+.bouton-ligne:hover, .bouton-ligne[data-confirmer="oui"] { color: var(--erreur); background: var(--erreur-fond); }
+
+.confirmation { margin: 10px 0 0; font-weight: 600; color: var(--accent); }
+
+/* ---------- Première visite ---------- */
+.bienvenue summary { list-style: none; display: flex; align-items: center; gap: 8px; }
+.bienvenue summary::-webkit-details-marker { display: none; }
+.bienvenue summary::after { content: "▾"; color: var(--accent); margin-left: auto; }
+.bienvenue:not([open]) summary::after { content: "▸"; }
+.bienvenue summary h2 { margin: 0; }
+.bienvenue[open] summary { margin-bottom: 12px; }
+.etapes { margin: 0 0 12px; padding-left: 22px; }
+.etapes li { margin-bottom: 6px; }
+
+/* ---------- Choix de la méthode ---------- */
+.choix-methode { border: none; margin: 0 0 14px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.option {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px; border: 2px solid var(--bordure); border-radius: 10px; cursor: pointer;
+  font-size: 0.95rem; color: var(--texte-doux);
+}
+.option strong { color: var(--texte); font-size: 1rem; }
+.option input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+.option:has(input:checked) { border-color: var(--accent); background: var(--accent-clair); }
+.option:has(input:focus-visible) { outline: 3px solid var(--texte); outline-offset: 2px; }
+
+.saisie-mois { display: grid; grid-template-columns: 1fr 110px; gap: 8px; }
+
+/* ---------- Réglages avancés ---------- */
+.avance { margin: 4px 0 8px; padding: 10px 14px; border: 1px dashed var(--bordure); border-radius: 10px; }
+.avance[open] summary { margin-bottom: 12px; }
 .bouton:focus-visible { outline: 3px solid var(--texte); outline-offset: 2px; }
 
 .erreurs {
@@ -139,6 +200,46 @@ input[type="number"]:focus {
   color: var(--alerte);
 }
 
+/* ---------- Répartition ---------- */
+.produits { display: grid; gap: 8px; }
+.ligne-produit {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 8px;
+  align-items: end;
+}
+.avec-valeurs .ligne-produit { grid-template-columns: 1fr 100px 140px; }
+.ligne-produit label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; color: var(--texte-doux); }
+input[type="text"] {
+  width: 100%;
+  font-size: 1.05rem;
+  padding: 10px 12px;
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  background: var(--fond);
+  color: var(--texte);
+}
+input[type="text"]:focus { outline: 3px solid var(--accent-clair); border-color: var(--accent); }
+.total-pourcentages { margin: 10px 0 0; font-weight: 700; }
+.total-pourcentages.ok { color: var(--accent); }
+.total-pourcentages.ko { color: var(--erreur); }
+
+.repartition { margin-top: 16px; text-align: left; }
+.repartition table { background: var(--carte); border-radius: 10px; overflow: hidden; }
+.repartition td:nth-child(3):last-child, .repartition td:nth-child(4) { font-weight: 700; }
+.tableau-large { overflow-x: auto; border-radius: 10px; }
+
+/* ---------- Enregistrer le versement ---------- */
+.enregistrer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--accent); text-align: left; }
+.enregistrer label { display: block; font-weight: 600; margin-bottom: 4px; }
+
+/* ---------- Suivi ---------- */
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.chiffre { padding: 12px; border-radius: 10px; background: var(--fond); text-align: center; }
+.chiffre span { display: block; font-size: 0.9rem; color: var(--texte-doux); }
+.chiffre strong { font-size: 1.2rem; }
+.ligne-courante td { background: var(--accent-clair); font-weight: 700; }
+
 /* ---------- Tableaux ---------- */
 .tableau-defilant { max-height: 340px; overflow: auto; margin-top: 12px; border: 1px solid var(--bordure); border-radius: 10px; }
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -160,6 +261,28 @@ summary { cursor: pointer; font-weight: 600; color: var(--accent); }
   padding: 12px;
   border-radius: 10px;
   background: var(--accent-clair);
+}
+
+/* ---------- Questions fréquentes ---------- */
+.faq-titre { margin-top: 20px; }
+.faq { border-top: 1px solid var(--bordure); padding: 10px 0 0; }
+.faq p { margin: 8px 0 4px; }
+
+/* ---------- Téléphone ---------- */
+@media (max-width: 520px) {
+  .carte { padding: 16px; }
+  .avec-valeurs .ligne-produit { grid-template-columns: 1fr 1fr; }
+  .avec-valeurs .ligne-produit .bloc-produit-nom { grid-column: 1 / -1; }
+  .avec-valeurs .ligne-produit { padding-bottom: 10px; border-bottom: 1px dashed var(--bordure); }
+  th, td { padding: 6px 8px; }
+}
+
+/* ---------- Impression : seulement le résultat et le suivi ---------- */
+@media print {
+  body { background: #fff; color: #000; }
+  .bienvenue, #formulaire, .enregistrer, .actions, .pied, details, .bouton-ligne { display: none !important; }
+  .carte { border: 1px solid #999; break-inside: avoid; }
+  .tableau-defilant { max-height: none; overflow: visible; }
 }
 
 /* ---------- Pied de page ---------- */
