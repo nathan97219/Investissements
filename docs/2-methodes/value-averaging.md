@@ -39,7 +39,7 @@ C'est le principe « acheter bas, vendre haut », appliqué mécaniquement, sans
 
 On peut faire grandir la cible un peu plus vite, en tenant compte du rendement espéré (par exemple 6 %/an).
 Les versements nécessaires sont alors plus faibles en moyenne, car on compte sur le marché pour faire une partie du travail.
-→ C'est ce que fera le [calculateur](../../outils/value-averaging/).
+→ C'est le réglage « rendement annuel attendu » du [calculateur](https://nathan97219.github.io/Investissements/outils/value-averaging/).
 
 ## Avantages
 
@@ -52,6 +52,13 @@ Les versements nécessaires sont alors plus faibles en moyenne, car on compte su
 - ⚠️ **Versements imprévisibles** : après un krach, la méthode peut demander 3 ou 4 fois le versement habituel. Il faut une **réserve de cash** ou un **plafond mensuel**.
 - ⚠️ **Plus de suivi** : il faut regarder la valeur du portefeuille avant chaque versement (d'où l'intérêt d'un outil).
 - ⚠️ **Les ventes** coûtent des frais et des impôts (sur un CTO) ; sur un PEA, on utilise plutôt le mode « jamais de vente ».
+
+## 🛠️ L'appliquer sans se tromper
+
+Le [**calculateur en ligne**](https://nathan97219.github.io/Investissements/outils/value-averaging/) fait tout le travail :
+- il retrouve tout seul ton **numéro de mois** à partir de ta date de départ ;
+- il te donne le montant **et sa répartition** entre tes ETF, en envoyant plus d'argent à ceux qui sont en retard (rééquilibrage sans vente) ;
+- il garde le **suivi** de tes versements et t'indique la **réserve de cash** à prévoir.
 
 ## Pour qui ?
 

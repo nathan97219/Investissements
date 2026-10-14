@@ -1,0 +1,26 @@
+# Lance les tests du calculateur à chaque Pull Request et à chaque push sur dev / master.
+# Si un calcul est cassé, la PR affiche une croix rouge : on ne fusionne pas.
+name: Tests du calculateur
+
+on:
+  pull_request:
+    paths: ["outils/value-averaging/**", ".github/workflows/tests-outil-va.yml"]
+  push:
+    branches: [dev, master]
+    paths: ["outils/value-averaging/**", ".github/workflows/tests-outil-va.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: outils/value-averaging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test

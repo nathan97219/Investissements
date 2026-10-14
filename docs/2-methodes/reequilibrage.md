@@ -21,6 +21,9 @@ Tu as choisi 60 % actions / 40 % obligations. Après 2 bonnes années, les actio
 Plutôt que de **vendre** ce qui a monté (frais, et impôts sur un CTO), on oriente les **prochains versements**
 vers ce qui est en retard. Pas de vente, pas d'impôt, même résultat sur quelques mois.
 
+> 🛠️ Le [calculateur](https://nathan97219.github.io/Investissements/outils/value-averaging/) le fait automatiquement :
+> coche « Je saisis la valeur de chaque produit », il te dit combien mettre sur chaque ETF pour revenir vers ta répartition cible.
+
 ## Pour qui ?
 
 Tous les profils dès qu'il y a **plus d'une ligne** dans le portefeuille.

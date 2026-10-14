@@ -1,0 +1,10 @@
+{
+  "name": "calculateur-value-averaging",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calculateur Value Averaging : combien investir ce mois-ci ?",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
