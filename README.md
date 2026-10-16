@@ -32,15 +32,34 @@ Ce projet rassemble ce que j'ai compris, sous forme de **fiches courtes**, à li
 
 ### 2. Les méthodes : comment investir ?
 
+Trois familles de questions, et on combine souvent une méthode de chaque. 👉 **[Le comparatif pour choisir](docs/2-methodes/00-choisir.md)**
+
+**⏱️ Quand et combien investir ?**
+
 | Fiche | Principe | Difficulté |
 |---|---|---|
-| [DCA](docs/2-methodes/dca.md) | Le même montant, à intervalles réguliers | ⭐ |
 | [Lump sum](docs/2-methodes/lump-sum.md) | Tout investir d'un coup | ⭐ |
-| [Rééquilibrage](docs/2-methodes/reequilibrage.md) | Revenir régulièrement à sa répartition cible | ⭐ |
+| [DCA](docs/2-methodes/dca.md) | Le même montant, à intervalles réguliers | ⭐ |
+| [Value Averaging](docs/2-methodes/value-averaging.md) | On investit ce qu'il faut pour suivre une trajectoire | ⭐⭐⭐ |
+
+**🧱 Comment construire et tenir son portefeuille ?**
+
+| Fiche | Principe | Difficulté |
+|---|---|---|
+| [Buy and Hold](docs/2-methodes/buy-and-hold.md) | Acheter des placements solides et ne plus les vendre | ⭐ |
 | [Lazy portfolios](docs/2-methodes/lazy-portfolios.md) | 1 à 3 ETF, et on n'y touche plus | ⭐ |
+| [Rééquilibrage](docs/2-methodes/reequilibrage.md) | Revenir régulièrement à sa répartition cible | ⭐ |
 | [Core-satellite](docs/2-methodes/core-satellite.md) | Un cœur solide + une petite part plus audacieuse | ⭐⭐ |
 | [Portefeuille permanent](docs/2-methodes/portefeuille-permanent.md) | 25 % actions, obligations, or et cash | ⭐⭐ |
-| [Value Averaging](docs/2-methodes/value-averaging.md) | On investit ce qu'il faut pour suivre une trajectoire | ⭐⭐⭐ |
+| [CPPI](docs/2-methodes/cppi.md) | Investir en actions sans descendre sous un plancher | ⭐⭐⭐ |
+
+**🔍 Quelles actions privilégier ?**
+
+| Fiche | Principe | Difficulté |
+|---|---|---|
+| [Value investing](docs/2-methodes/value-investing.md) | Acheter de bonnes entreprises en solde | ⭐⭐⭐ |
+| [Growth investing](docs/2-methodes/growth-investing.md) | Miser sur les entreprises qui grandissent vite | ⭐⭐⭐ |
+| [Factor investing](docs/2-methodes/factor-investing.md) | Pencher vers les caractéristiques historiquement récompensées | ⭐⭐ |
 
 ### 3. Quel est ton profil ?
 
